@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Thank you — CasaGlow</title>
+<style>
+  :root{--bg:#f7fbff; --accent1:#7c3aed; --accent2:#06b6d4; --muted:#6b7280; --card:#fff; --radius:14px}
+  body{margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:linear-gradient(180deg,#f7fbff,#f6f8fb); color:#0f172a; display:flex; align-items:center; justify-content:center; min-height:100vh}
+  .card{background:var(--card); padding:28px; border-radius:var(--radius); box-shadow:0 18px 40px rgba(16,24,40,0.08); max-width:880px; width:92%;}
+  .top{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px}
+  h1{margin:0; font-size:22px}
+  .sub{color:var(--muted); margin-top:8px}
+  .content{display:flex; gap:20px; align-items:center; margin-top:18px}
+  .content img{width:140px; height:100px; object-fit:cover; border-radius:10px}
+  .cta-row{display:flex; gap:12px; margin-top:18px}
+  .btn{background:linear-gradient(90deg,var(--accent1),var(--accent2)); color:white; padding:12px 16px; border-radius:12px; border:none; cursor:pointer; font-weight:800}
+  .btn-ghost{background:transparent; border:1px solid #eef2ff; padding:12px 16px; border-radius:12px; cursor:pointer}
+  .muted{color:var(--muted)}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">
+      <div>
+        <h1>🎉 Thank you for your purchase! Happyy Day!!</h1>
+        <div class="sub">Your order has been placed successfully.</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:700">CasaGlow</div>
+        <div class="muted">Order Confirmation</div>
+      </div>
+    </div>
+
+    <div id="orderArea" class="content">
+      <!-- Will be populated -->
+      <div style="flex:1">
+        <div style="font-weight:800" id="orderId">Order #—</div>
+        <div id="custName" class="muted" style="margin-top:6px"></div>
+        <div style="height:8px"></div>
+        <div id="prodName" style="font-weight:800"></div>
+        <div id="prodDesc" class="muted"></div>
+        <div style="margin-top:12px" id="prodPrice" style="font-weight:900"></div>
+      </div>
+      <img id="prodImg" src="https://via.placeholder.com/400x300?text=Thanks" alt="product image">
+    </div>
+
+    <div class="cta-row">
+      <button class="btn" onclick="goHome()">Back to Home</button>
+      <button class="btn-ghost" onclick="downloadReceipt()">Download Receipt (demo)</button>
+    </div>
+  </div>
+
+<script>
+  function currency(x){ return '₹' + x.toLocaleString(); }
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const raw = localStorage.getItem('lastOrder');
+    if(!raw){
+      // No last order: show generic
+      document.getElementById('orderId').textContent = 'Order #—';
+      document.getElementById('prodName').textContent = 'No recent order found';
+      document.getElementById('prodDesc').textContent = '';
+      document.getElementById('prodPrice').textContent = '';
+      return;
+    }
+    const order = JSON.parse(raw);
+    document.getElementById('orderId').textContent = order.id || ('ORD' + Date.now());
+    document.getElementById('custName').textContent = (order.customer && order.customer.name) ? order.customer.name + ' • ' + (order.customer.email||'') : '';
+    if(order.product){
+      document.getElementById('prodName').textContent = order.product.name;
+      document.getElementById('prodDesc').textContent = order.product.desc;
+      document.getElementById('prodPrice').textContent = currency(order.product.price);
+      document.getElementById('prodImg').src = order.product.img || 'https://via.placeholder.com/400x300?text=Thank+You';
+    }
+  });
+
+  function goHome(){
+    // Optionally clear lastOrder if desired; keep it for receipt
+    window.location.href = 'index.html';
+  }
+
+  function downloadReceipt(){
+    // Small demo receipt text file
+    const raw = localStorage.getItem('lastOrder');
+    const order = raw ? JSON.parse(raw) : {id:'—'};
+    let text = 'CasaGlow - Receipt\\n\\n';
+    text += 'Order: ' + (order.id || '—') + '\\n';
+    if(order.customer) text += 'Customer: ' + (order.customer.name||'') + ' • ' + (order.customer.email||'') + '\\n';
+    if(order.product) text += 'Product: ' + order.product.name + ' - ' + order.product.price + '\\n';
+    text += '\\nThank you for shopping with CasaGlow!';
+    const blob = new Blob([text], {type:'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = (order.id || 'receipt') + '.txt';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  }
+</script>
+</body>
+</html>
