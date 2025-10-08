@@ -1,220 +1,207 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>CasaGlow — Home Decor</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CozyNest Decor | Home Decor Store</title>
 <style>
-  :root{
-    --bg:#f6f8fb; --card:#ffffff; --muted:#6b7280;
-    --accent1: linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%);
-    --accent2: #3b82f6;
-    --shadow: 0 6px 18px rgba(20,20,40,0.08);
-    --radius: 14px;
-    --glass: rgba(255,255,255,0.6);
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background: linear-gradient(180deg,#f7fbff 0%, #f6f8fb 100%);
-    color:#0f172a; -webkit-font-smoothing:antialiased;
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f9e0ae, #f6d6ad, #f9c5bd);
+    color: #444;
   }
 
-  /* Header / Hero */
-  header{
-    padding:28px 5vw; display:flex; align-items:center; justify-content:space-between;
+  header {
+    background: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    padding: 30px 10px;
+    backdrop-filter: blur(10px);
   }
-  .brand{
-    display:flex; gap:16px; align-items:center;
+  header h1 {
+    font-size: 2.8rem;
+    color: #8b5e3c;
+    letter-spacing: 1px;
   }
-  .logo{
-    height:56px; width:56px; border-radius:12px; background:var(--accent1); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; box-shadow:var(--shadow);
-  }
-  .brand h1{margin:0;font-size:20px; letter-spacing:0.2px;}
-  .brand p{margin:0;color:var(--muted); font-size:13px}
-
-  nav a{margin-left:18px; color:var(--muted); text-decoration:none; font-weight:600}
-  nav a.button{
-    background:linear-gradient(90deg,#7c3aed,#06b6d4); color:white; padding:8px 14px; border-radius:10px;
-    box-shadow:0 6px 18px rgba(99,102,241,0.18);
+  header p {
+    font-size: 1.2rem;
+    color: #6b4f34;
   }
 
-  .hero{
-    margin:18px 5vw; padding:48px; border-radius:20px; background-image:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5)), url('https://via.placeholder.com/1600x600?text=Home+Decor+Banner');
-    background-size:cover; background-position:center; display:flex; align-items:center; gap:40px; box-shadow:var(--shadow);
+  .hero {
+    background: url('https://cdn.pixabay.com/photo/2017/05/28/14/49/bedroom-2354247_1280.jpg') center/cover no-repeat;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
   }
-  .hero-left{max-width:620px;}
-  .store-title{font-size:36px; margin:0 0 8px 0}
-  .tagline{margin:0 0 18px 0; color:var(--muted); font-size:16px}
-  .cta-row{display:flex; gap:12px; align-items:center;}
-  .cta{background:var(--accent2); color:white; padding:12px 16px; border-radius:12px; text-decoration:none; font-weight:700}
-  .sub-cta{color:var(--muted); font-weight:600}
-  .hero-right{flex:1; display:flex; justify-content:flex-end;}
-  .hero-card{background:rgba(255,255,255,0.75); padding:18px; border-radius:12px; box-shadow:0 10px 30px rgba(16,24,40,0.06); max-width:360px;}
-  .hero-card h3{margin:0 0 8px 0}
-  .hero-card p{margin:0;color:var(--muted); font-size:14px}
-
-  /* Products grid */
-  .container{padding:26px 5vw 80px 5vw;}
-  .section-title{display:flex; align-items:end; justify-content:space-between; margin-bottom:18px;}
-  .section-title h2{margin:0}
-  .grid{
-    display:grid; gap:18px; grid-template-columns: repeat(3,1fr);
+  .hero h2 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+  }
+  .hero p {
+    font-size: 1.3rem;
   }
 
-  .card{
-    background:var(--card); border-radius:16px; padding:12px; box-shadow:var(--shadow); transition:transform .25s, box-shadow .25s;
-    display:flex; flex-direction:column; overflow:hidden;
+  .products {
+    padding: 60px 5%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
   }
-  .card:hover{transform:translateY(-8px); box-shadow:0 18px 40px rgba(20,20,40,0.08);}
-  .card img{width:100%; height:200px; object-fit:cover; border-radius:12px}
-  .meta{padding:12px 6px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex:1}
-  .meta .title{font-weight:700}
-  .meta .desc{color:var(--muted); font-size:13px}
-  .price{font-weight:800}
-  .card-footer{display:flex; gap:10px; padding:12px 6px 6px 6px; align-items:center}
-  .btn-buy{flex:1; background:linear-gradient(90deg,#ff7ab6,#ffb86b); color:white; border:none; padding:10px 12px; border-radius:12px; cursor:pointer; font-weight:700}
-  .btn-wish{background:transparent; border:1px solid #ededf3; padding:8px 10px; border-radius:10px; cursor:pointer; color:var(--muted)}
+  .card {
+    background: #fffdf9;
+    border-radius: 16px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    width: 280px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  }
+  .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  .card-content {
+    padding: 20px;
+    text-align: center;
+  }
+  .card-content h3 {
+    color: #8b5e3c;
+    margin-bottom: 5px;
+  }
+  .card-content p {
+    color: #6b4f34;
+    font-size: 0.95rem;
+  }
+  .price {
+    color: #b86b00;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  button {
+    background: linear-gradient(45deg, #ffb6b9, #fae3d9);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #333;
+    font-weight: 600;
+    transition: transform 0.2s;
+  }
+  button:hover {
+    transform: scale(1.05);
+  }
 
-  /* Responsive */
-  @media (max-width:1000px){
-    .grid{grid-template-columns: repeat(2,1fr)}
-    .hero{flex-direction:column; padding:28px}
-    .hero-right{justify-content:center}
-  }
-  @media (max-width:640px){
-    header{padding:18px}
-    .grid{grid-template-columns: 1fr}
-    .hero{margin:12px; border-radius:12px}
-    .store-title{font-size:28px}
+  footer {
+    text-align: center;
+    padding: 30px 10px;
+    color: #8b5e3c;
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.4);
+    margin-top: 50px;
   }
 
-  /* subtle utilities */
-  .pill{display:inline-block; padding:6px 10px; border-radius:999px; font-weight:700; background:rgba(59,130,246,0.08); color:var(--accent2); font-size:13px}
+  @media (max-width: 768px) {
+    .hero h2 { font-size: 2rem; }
+    .products { padding: 30px 20px; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <div class="brand">
-    <div class="logo">CG</div>
-    <div>
-      <h1>CasaGlow</h1>
-      <p>Curated home decor — feel at home, beautifully.</p>
-    </div>
-  </div>
 
-  <nav>
-    <a href="#products">Products</a>
-    <a href="#about">About</a>
-    <a class="button" href="#products">Shop Now</a>
-  </nav>
+<header>
+  <h1>CozyNest Decor</h1>
+  <p>Bringing warmth and elegance to your living spaces ✨</p>
 </header>
 
-<section class="hero" aria-label="Hero">
-  <div class="hero-left">
-    <h2 class="store-title">Make every room a warm welcome</h2>
-    <p class="tagline">Handpicked cushions, sofas, accessories — modern, cozy, crafted for daily life.</p>
-    <div class="cta-row">
-      <a class="cta" href="#products">Explore Collections</a>
-      <div class="sub-cta">Free local delivery on orders ₹2,000+</div>
-    </div>
-  </div>
-  <div class="hero-right">
-    <div class="hero-card" role="article">
-      <h3>Spring Sofas — Soft & Sustainable</h3>
-      <p>Minimalist shapes, natural fabrics. Limited stock available this season.</p>
-      <div style="height:10px"></div>
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div class="pill">Best seller</div>
-        <div style="color:var(--muted); font-weight:700">From ₹28,999</div>
-      </div>
-    </div>
-  </div>
+<section class="hero">
+  <h2>Transform Your Home with Style</h2>
+  <p>Explore beautiful, comfortable, and timeless pieces</p>
 </section>
 
-<main class="container">
-  <div class="section-title">
-    <h2 id="products">Featured Home Decor</h2>
-    <div style="color:var(--muted)">Handpicked for your living space</div>
-  </div>
+<section class="products" id="product-list">
+  <!-- Product cards will be injected here -->
+</section>
 
-  <div class="grid" id="productGrid">
-    <!-- JS will inject product cards -->
-  </div>
-</main>
+<footer>
+  © 2025 CozyNest Decor | Designed with ❤️ by Hrishika Reddy
+</footer>
 
 <script>
-  // Product data (6 items)
   const products = [
-    {id:'p1', name:'CloudSoft Cushion', desc:'Plush cushion with linen cover, 18"x18"', price:799, img:'https://via.placeholder.com/600x400?text=CloudSoft+Cushion'},
-    {id:'p2', name:'Haven Sofa (2-seater)', desc:'Compact modern 2-seater, walnut legs', price:28999, img:'https://via.placeholder.com/600x400?text=Haven+Sofa'},
-    {id:'p3', name:'Aurora Bedside Lamp', desc:'Warm LED light with dimmer', price:2499, img:'https://via.placeholder.com/600x400?text=Aurora+Lamp'},
-    {id:'p4', name:'Nordic Dining Table', desc:'Solid oak, seats 4 comfortably', price:17999, img:'https://via.placeholder.com/600x400?text=Nordic+Dining+Table'},
-    {id:'p5', name:'Velvet Throw', desc:'Cozy 130x180 cm throw, machine-washable', price:1499, img:'https://via.placeholder.com/600x400?text=Velvet+Throw'},
-    {id:'p6', name:'Luna Rug (4x6 ft)', desc:'Handwoven low-pile rug', price:6999, img:'https://via.placeholder.com/600x400?text=Luna+Rug'}
+    {
+      id:'p1',
+      name:'CloudSoft Cushion',
+      desc:'Plush cushion with linen cover, 18"x18"',
+      price:799,
+      img:'https://casaandbeyond.com.au/cdn/shop/files/3_6fd98e30-65cb-4748-876f-c9fcd53c4048_800x.jpg?v=1730994704'
+    },
+    {
+      id:'p2',
+      name:'Haven Sofa (2-seater)',
+      desc:'Compact modern 2-seater, walnut legs',
+      price:28999,
+      img:'https://d2emch4msrhe87.cloudfront.net/image/cache/data/wooden-sofa/advik-sheesham-wood-sofa-set/honey/updated-images/new-logo-3/New-3D/4-750x650.jpg'
+    },
+    {
+      id:'p3',
+      name:'Aurora Bedside Lamp',
+      desc:'Warm LED light with dimmer',
+      price:2499,
+      img:'https://www.ankurlighting.com/cdn/shop/files/ankur-unplugged-aurora-wireless-table-lamp-778.webp?v=1752673030'
+    },
+    {
+      id:'p4',
+      name:'Nordic Dining Table',
+      desc:'Solid oak, seats 4 comfortably',
+      price:17999,
+      img:'https://static.wixstatic.com/media/55b854_12c2810cec0c4ed69cd4c5ae2b40f968~mv2.jpg/v1/fill/w_546,h_287,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/scandinavian-dining-tables.jpg'
+    },
+    {
+      id:'p5',
+      name:'Velvet Throw',
+      desc:'Cozy 130x180 cm throw, machine-washable',
+      price:1499,
+      img:'https://assets.myntassets.com/dpr_1.5,q_30,w_400,c_limit,fl_progressive/assets/images/2024/NOVEMBER/12/gLPaHSfe_3e9ed80170f9475481b2f636f7e6fb31.jpg'
+    },
+    {
+      id:'p6',
+      name:'Luna Rug (4x6 ft)',
+      desc:'Handwoven low-pile rug',
+      price:6999,
+      img:'https://aplusrstore.com/cdn/shop/products/2_2b2bc0ea-ee2f-41d9-99e9-248dbccdfde2_640x@2x.progressive.jpg?v=1753787713'
+    }
   ];
 
-  function currency(x){ return '₹' + x.toLocaleString(); }
-
-  // Render product cards
-  const grid = document.getElementById('productGrid');
-  products.forEach(p=>{
-    const card = document.createElement('article');
-    card.className = 'card';
-    card.innerHTML = `
+  const container = document.getElementById('product-list');
+  container.innerHTML = products.map(p => `
+    <div class="card">
       <img src="${p.img}" alt="${p.name}">
-      <div class="meta">
-        <div style="flex:1">
-          <div class="title">${p.name}</div>
-          <div class="desc">${p.desc}</div>
-        </div>
-        <div style="text-align:right">
-          <div class="price">${currency(p.price)}</div>
-          <div style="color:var(--muted); font-size:12px">Inclusive of taxes</div>
-        </div>
+      <div class="card-content">
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <div class="price">₹${p.price.toLocaleString()}</div>
+        <button onclick="buyProduct('${p.id}')">Buy Now</button>
       </div>
-      <div class="card-footer">
-        <button class="btn-buy" onclick="buyNow('${p.id}')">Buy Now</button>
-        <button class="btn-wish" onclick="wish('${p.id}')">♡</button>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
+    </div>
+  `).join('');
 
-  function wish(id){
-    // small visual feedback
-    alert('Added to wishlist (demo): ' + (products.find(x=>x.id===id)||{}).name);
-  }
-
-  function buyNow(id){
-    const product = products.find(p=>p.id===id);
-    if(!product) return;
-    // Save to localStorage
-    localStorage.setItem('selectedProduct', JSON.stringify(product));
-    // Also clear any previous payment data (keeps simple)
-    localStorage.removeItem('paymentDone');
-    // Navigate to form.html
+  function buyProduct(id) {
+    const selected = products.find(p => p.id === id);
+    localStorage.setItem('selectedProduct', JSON.stringify(selected));
     window.location.href = 'form.html';
   }
-
-  // If user returns and had selected product earlier, show a subtle toast (non-blocking)
-  document.addEventListener('DOMContentLoaded', ()=>{
-    const sel = localStorage.getItem('selectedProduct');
-    if(sel){
-      const product = JSON.parse(sel);
-      // tiny unobtrusive badge
-      const badge = document.createElement('div');
-      badge.style.position='fixed'; badge.style.bottom='18px'; badge.style.right='18px';
-      badge.style.background='linear-gradient(90deg,#06b6d4,#7c3aed)'; badge.style.color='white'; badge.style.padding='10px 14px';
-      badge.style.borderRadius='12px'; badge.style.boxShadow='0 10px 30px rgba(16,24,40,0.12)';
-      badge.style.fontWeight=700; badge.style.cursor='pointer';
-      badge.textContent = 'Continue checkout: ' + product.name;
-      badge.onclick = ()=> window.location.href='form.html';
-      document.body.appendChild(badge);
-      setTimeout(()=> badge.style.opacity=0.95, 200);
-      setTimeout(()=> badge.remove(), 10000);
-    }
-  });
 </script>
+
 </body>
 </html>
