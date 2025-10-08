@@ -1,152 +1,86 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Payment — CasaGlow</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment | CozyNest Decor</title>
 <style>
-  :root{--bg:#fff; --card:#fff; --muted:#6b7280; --accent:#06b6d4; --radius:12px; --shadow:0 10px 30px rgba(16,24,40,0.06)}
-  body{margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:linear-gradient(180deg,#f7fbff, #f6f8fb); color:#0f172a}
-  .wrap{max-width:900px; margin:28px auto; padding:20px;}
-  .header{display:flex; justify-content:space-between; align-items:center; margin-bottom:18px}
-  .card{background:var(--card); padding:18px; border-radius:var(--radius); box-shadow:var(--shadow)}
-  h1{margin:0;font-size:20px}
-  .layout{display:grid; grid-template-columns: 1fr 320px; gap:20px}
-  label{display:block; font-weight:700; margin-bottom:6px}
-  input{width:100%; padding:12px; border-radius:10px; border:1px solid #e6e9ef; margin-bottom:12px}
-  .btn{background:linear-gradient(90deg,#7c3aed,#06b6d4); color:white; border:none; padding:12px 16px; border-radius:12px; cursor:pointer; font-weight:800}
-  .summary img{width:110px; height:80px; object-fit:cover; border-radius:10px}
-  .muted{color:var(--muted)}
-  @media (max-width:900px){ .layout{grid-template-columns: 1fr} .summary img{width:100px;height:70px}}
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #a3d2ca, #f7d9d9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .card {
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    width: 350px;
+  }
+  h2 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 20px;
+  }
+  label {
+    font-weight: 600;
+    display: block;
+    margin-top: 10px;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(45deg, #ffb6b9, #fae3d9);
+    border: none;
+    border-radius: 10px;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  button:hover {
+    transform: scale(1.03);
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="header">
-    <div><h1>Secure Payment</h1><div style="color:var(--muted)">Complete your purchase</div></div>
-    <div><a href="index.html" style="text-decoration:none; color:var(--muted)">← Continue shopping</a></div>
-  </div>
 
-  <div class="layout">
-    <div class="card">
-      <form id="payForm" onsubmit="pay(event)">
-        <label>Card Number</label>
-        <input id="card" type="text" inputmode="numeric" placeholder="4242 4242 4242 4242" maxlength="19" required>
-
-        <div style="display:flex; gap:12px;">
-          <div style="flex:1">
-            <label>Expiry (MM/YY)</label>
-            <input id="expiry" type="text" placeholder="08/28" maxlength="5" required>
-          </div>
-          <div style="width:120px">
-            <label>CVV</label>
-            <input id="cvv" type="password" maxlength="4" placeholder="123" required>
-          </div>
-        </div>
-
-        <div style="height:8px"></div>
-        <button class="btn" type="submit">Proceed to Pay</button>
-      </form>
-    </div>
-
-    <aside class="card summary" id="orderSummary">
-      <h3 style="margin-top:0">Order Summary</h3>
-      <div id="productArea" style="display:flex; gap:12px; align-items:center">
-        <!-- injected -->
-      </div>
-      <div style="height:12px"></div>
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div class="muted">Subtotal</div><div id="subtotal" style="font-weight:800"></div>
-      </div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-        <div class="muted">Shipping</div><div class="muted">Calculated at dispatch</div>
-      </div>
-      <div style="height:14px"></div>
-      <div style="font-size:13px; color:var(--muted)">This is a demo payment. No real charge will occur.</div>
-    </aside>
-  </div>
+<div class="card">
+  <h2>Secure Payment</h2>
+  <form onsubmit="proceed(event)">
+    <label>Card Number</label>
+    <input type="text" maxlength="16" placeholder="1234 5678 9012 3456" required>
+    
+    <label>Expiry Date</label>
+    <input type="month" required>
+    
+    <label>CVV</label>
+    <input type="password" maxlength="3" placeholder="123" required>
+    
+    <button type="submit">Proceed to Pay</button>
+  </form>
 </div>
 
 <script>
-  function currency(x){ return '₹' + x.toLocaleString(); }
-  document.addEventListener('DOMContentLoaded', ()=>{
-    const raw = localStorage.getItem('selectedProduct');
-    const productArea = document.getElementById('productArea');
-    const subtotal = document.getElementById('subtotal');
-    if(!raw){
-      productArea.innerHTML = '<div style="font-weight:700">No product selected</div>';
-      subtotal.textContent = '—';
-      return;
-    }
-    const p = JSON.parse(raw);
-    productArea.innerHTML = `<img src="${p.img}" alt="${p.name}"><div style="flex:1"><div style="font-weight:800">${p.name}</div><div style="color:#6b7280">${p.desc}</div></div><div style="font-weight:900">${currency(p.price)}</div>`;
-    subtotal.textContent = currency(p.price);
-    // prefill customer email/name if available (helpful)
-    const saved = localStorage.getItem('customerInfo');
-    if(saved){
-      try{
-        const info = JSON.parse(saved);
-        // show a small welcome in console for demo
-        console.log('Customer:', info.name, info.email);
-      }catch(e){}
-    }
-  });
-
-  function simpleCardFormat(v){
-    // format pretty grouping "#### #### ..."
-    return v.replace(/\s+/g,'').replace(/(\d{4})/g,'$1 ').trim();
-  }
-  // formatting as user types
-  document.getElementById('card').addEventListener('input', (e)=>{
-    const pos = e.target.selectionStart;
-    const formatted = simpleCardFormat(e.target.value);
-    e.target.value = formatted;
-  });
-
-  function pay(e){
-    e.preventDefault();
-    // simple validation and fake processing
-    const raw = localStorage.getItem('selectedProduct');
-    if(!raw){
-      alert('No product in cart. Please select a product first.');
-      window.location.href = 'index.html';
-      return;
-    }
-    const card = document.getElementById('card').value.replace(/\s+/g,'');
-    const expiry = document.getElementById('expiry').value.trim();
-    const cvv = document.getElementById('cvv').value.trim();
-    if(card.length < 12 || !/^\d+$/.test(card)){
-      alert('Please enter a valid card number (demo).');
-      return;
-    }
-    if(!/^\d{2}\/\d{2}$/.test(expiry)){
-      alert('Expiry must be in MM/YY format.');
-      return;
-    }
-    if(!/^\d{3,4}$/.test(cvv)){
-      alert('CVV must be 3 or 4 digits.');
-      return;
-    }
-
-    // simulate payment processing...
-    // Save order to localStorage for thankyou page
-    const product = JSON.parse(raw);
-    const customer = JSON.parse(localStorage.getItem('customerInfo') || '{}');
-    const order = {
-      id: 'ORD' + Date.now(),
-      product: product,
-      customer: customer,
-      payment: {method:'card', last4: card.slice(-4), at: Date.now()}
-    };
-    localStorage.setItem('lastOrder', JSON.stringify(order));
-    localStorage.setItem('paymentDone', 'true');
-
-    // Clear selected product (simulate that it's been ordered)
-    localStorage.removeItem('selectedProduct');
-
-    // Redirect to thank you
-    window.location.href = 'thankyou.html';
-  }
+function proceed(e) {
+  e.preventDefault();
+  window.location.href = 'thankyou.html';
+}
 </script>
+
 </body>
 </html>
