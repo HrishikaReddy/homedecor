@@ -1,149 +1,114 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Checkout — CasaGlow</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Form | CozyNest Decor</title>
 <style>
-  :root{--bg:#f7fafc; --muted:#6b7280; --accent:#06b6d4; --card:#fff; --radius:12px; --shadow: 0 10px 30px rgba(16,24,40,0.06)}
-  body{margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--bg); color:#0f172a}
-  .wrap{max-width:960px; margin:28px auto; padding:20px;}
-  .top{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
-  .logo{display:flex; gap:12px; align-items:center}
-  .logo .box{width:46px;height:46px;border-radius:10px;background:linear-gradient(90deg,#7c3aed,#06b6d4);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
-  h1{margin:0;font-size:20px}
-  .grid{display:grid; grid-template-columns: 1fr 360px; gap:20px}
-
-  .card{background:var(--card); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
-  form label{display:block; font-weight:700; margin-bottom:6px}
-  input[type="text"], input[type="email"]{width:100%; padding:12px; border-radius:10px; border:1px solid #e6e9ef; margin-bottom:12px; font-size:14px}
-  .product-card{display:flex; gap:12px; align-items:center}
-  .product-card img{width:110px; height:80px; object-fit:cover; border-radius:8px}
-  .product-details{flex:1}
-  .muted{color:var(--muted); font-size:13px}
-  .btn{display:inline-block; background:linear-gradient(90deg,#ff7ab6,#ffb86b); padding:12px 16px; color:white; font-weight:800; border-radius:12px; text-decoration:none; border:none; cursor:pointer}
-  .btn-ghost{background:transparent; border:1px solid #e6e9ef; padding:12px 14px; border-radius:12px; cursor:pointer}
-
-  @media (max-width:900px){ .grid{grid-template-columns: 1fr} .product-card img{width:100px;height:70px}}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f9e0ae, #f6d6ad, #f9c5bd);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .form-card {
+    background: #fffdf9;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    width: 360px;
+    text-align: center;
+  }
+  h2 {
+    color: #8b5e3c;
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    text-align: left;
+    font-weight: 600;
+    color: #6b4f34;
+    margin-top: 10px;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    font-size: 15px;
+  }
+  .product-info {
+    background: #fff3e0;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 15px;
+    font-size: 15px;
+    color: #6b4f34;
+  }
+  button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(45deg, #ffb6b9, #fae3d9);
+    border: none;
+    border-radius: 10px;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  button:hover {
+    transform: scale(1.05);
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="top">
-    <div class="logo"><div class="box">CG</div><div><h1>CasaGlow</h1><div style="color:var(--muted); font-size:13px">Checkout</div></div></div>
-    <div><a href="index.html" class="btn-ghost">← Continue Shopping</a></div>
-  </div>
 
-  <div class="grid">
-    <div class="card">
-      <h2 style="margin-top:0">Your Details</h2>
-      <p class="muted">Please provide name & email for order confirmation.</p>
+<div class="form-card">
+  <h2>Customer Details</h2>
+  <form onsubmit="proceed(event)">
+    <label>Full Name</label>
+    <input type="text" id="name" required>
 
-      <form id="checkoutForm" onsubmit="proceed(event)">
-        <label for="fullname">Full Name</label>
-        <input id="fullname" name="fullname" type="text" placeholder="e.g., Ananya Verma" required>
+    <label>Email Address</label>
+    <input type="email" id="email" required>
 
-        <label for="email">Email Address</label>
-        <input id="email" name="email" type="email" placeholder="you@domain.com" required>
-
-        <div style="height:10px"></div>
-        <div style="display:flex; gap:12px; align-items:center;">
-          <button class="btn" type="submit">Proceed to Payment</button>
-          <button type="button" class="btn-ghost" onclick="clearSelection()">Clear selection</button>
-        </div>
-      </form>
+    <div class="product-info" id="productDisplay">
+      Loading selected product...
     </div>
 
-    <aside class="card" id="cartSummary">
-      <h3 style="margin-top:0">Order Summary</h3>
-      <div id="productArea" class="product-card">
-        <!-- Filled by JS -->
-        <div style="flex:1">
-          <div style="font-weight:700">No product selected</div>
-        </div>
-      </div>
-
-      <div style="height:12px"></div>
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div class="muted">Subtotal</div>
-        <div id="subtotal" style="font-weight:800">—</div>
-      </div>
-      <div style="height:10px"></div>
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div class="muted">Shipping</div>
-        <div class="muted">Calculated at payment</div>
-      </div>
-      <div style="height:16px"></div>
-      <div style="font-size:14px; color:var(--muted)">You can change your selection on the homepage.</div>
-    </aside>
-  </div>
+    <button type="submit">Proceed to Payment</button>
+  </form>
 </div>
 
 <script>
-  // Load selected product from localStorage
-  function currency(x){ return '₹' + x.toLocaleString(); }
-  function showSelected(){
-    const raw = localStorage.getItem('selectedProduct');
-    const area = document.getElementById('productArea');
-    const subtotal = document.getElementById('subtotal');
-    if(!raw){
-      area.innerHTML = '<div style="flex:1"><div style="font-weight:700">No product selected</div><div class="muted">Go back to shop to choose a product.</div></div>';
-      subtotal.textContent = '—';
-      return;
-    }
-    const p = JSON.parse(raw);
-    area.innerHTML = `
-      <img src="${p.img}" alt="${p.name}">
-      <div class="product-details">
-        <div style="font-weight:800">${p.name}</div>
-        <div class="muted">${p.desc}</div>
-        <div style="height:8px"></div>
-        <div style="font-weight:900">${currency(p.price)}</div>
-      </div>
+  // Retrieve selected product
+  const product = JSON.parse(localStorage.getItem('selectedProduct'));
+  const productDiv = document.getElementById('productDisplay');
+  if (product) {
+    productDiv.innerHTML = `
+      <strong>Product:</strong> ${product.name}<br>
+      <strong>Price:</strong> ₹${product.price.toLocaleString()}
     `;
-    subtotal.textContent = currency(p.price);
+  } else {
+    productDiv.innerHTML = 'No product selected.';
   }
 
-  // Fill name/email if previously saved
-  document.addEventListener('DOMContentLoaded', ()=>{
-    showSelected();
-    const saved = localStorage.getItem('customerInfo');
-    if(saved){
-      try{
-        const info = JSON.parse(saved);
-        if(info.name) document.getElementById('fullname').value = info.name;
-        if(info.email) document.getElementById('email').value = info.email;
-      }catch(e){}
-    }
-  });
-
-  function proceed(e){
+  function proceed(e) {
     e.preventDefault();
-    const name = document.getElementById('fullname').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const sel = localStorage.getItem('selectedProduct');
-    if(!sel){
-      alert('Please select a product first on the home page.');
-      window.location.href = 'index.html';
-      return;
-    }
-    if(!name || !email){
-      alert('Please fill name and email.');
-      return;
-    }
-    // Save customer info and continue
-    const info = {name:name, email:email, time:Date.now()};
-    localStorage.setItem('customerInfo', JSON.stringify(info));
-    // keep product in localStorage and go
+    const user = {
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+    };
+    localStorage.setItem('customerInfo', JSON.stringify(user));
     window.location.href = 'payment.html';
   }
-
-  function clearSelection(){
-    if(confirm('Clear selected product?')){
-      localStorage.removeItem('selectedProduct');
-      showSelected();
-    }
-  }
 </script>
+
 </body>
 </html>
